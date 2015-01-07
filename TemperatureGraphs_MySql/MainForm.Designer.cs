@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(374, 341);
             this.Name = "MainForm";
-            this.Text = "Temperature Graph";
+            this.Text = "График температуры";
             this.ResumeLayout(false);
 
 		}
