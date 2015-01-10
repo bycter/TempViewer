@@ -70,21 +70,30 @@ namespace TemperatureGraphs_MySql
 			}
 			catch (MySqlException ex)
 			{
+				string errorMessage;
+
 				//When handling errors, you can your application's response based 
 				//on the error number.
 				//The two most common error numbers when connecting are as follows:
-				//0: Cannot connect to server.
-				//1045: Invalid user name and/or password.
+				//1042: Cannot connect to server.
+				//0: Invalid user name and/or password.
+
+				errorMessage = "Error: " + ex.Number + ". ";
 				switch (ex.Number)
 				{
 					case 0:
-						MessageBox.Show("Cannot connect to server.  Contact administrator");
+						errorMessage += "Invalid username/password/database, please try again";
 						break;
 
-					case 1045:
-						MessageBox.Show("Invalid username/password, please try again");
+					case 1042:
+						errorMessage += "Message: Can't get hostname for your address. Contact administrator";
+						break;
+
+					default:
+						errorMessage += "Something wrong...";
 						break;
 				}
+				MessageBox.Show(errorMessage);
 				return false;
 			}
 		}
