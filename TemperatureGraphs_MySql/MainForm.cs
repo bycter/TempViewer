@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Diagnostics;
 using MySql.Data.MySqlClient;
 
 
@@ -58,22 +58,40 @@ namespace TemperatureGraphs_MySql
 
 		private void btnViewTable_Click(object sender, EventArgs e)
 		{
+            List<string>[] list1 = new List<string>[3];
+            list1[0] = new List<string>();
+            list1[1] = new List<string>();
+            list1[2] = new List<string>();
+            int tableCount;
 
+            //label2.Text = Convert.ToString(MysqlCount());
+            list1 = MysqlSelect();
+            tableCount = list1[0].Count;
+
+            dataGridView1.RowCount = tableCount;
+            dataGridView1.ColumnCount = 3;
+
+            for (int i = 0; i < tableCount; i++)
+            {
+                dataGridView1.Rows[i].Cells[0].Value = Convert.ToString(list1[0][i]);
+                dataGridView1.Rows[i].Cells[1].Value = Convert.ToString(list1[1][i]);
+                dataGridView1.Rows[i].Cells[2].Value = Convert.ToString(list1[2][i]);
+            }
 		}
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            Insert();
+            MysqlInsert();
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            Update();
+            MysqlUpdate();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            Delete();
+            MysqlDelete();
         }
 
 		//open connection to database
@@ -139,7 +157,7 @@ namespace TemperatureGraphs_MySql
 
 
         //Insert statement
-        public void Insert()
+        public void MysqlInsert()
         {
             string query = "INSERT INTO tableInfo (name, age) VALUES('John Smith', '33')";
 
@@ -158,7 +176,7 @@ namespace TemperatureGraphs_MySql
         }
 
         //Update statement
-        public void Update()
+        public void MysqlUpdate()
         {
             string query = "UPDATE tableInfo SET name='Joe', age='22' WHERE name='John Smith'";
 
@@ -181,7 +199,7 @@ namespace TemperatureGraphs_MySql
         }
 
         //Delete statement
-        public void Delete()
+        public void MysqlDelete()
         {
             string query = "DELETE FROM tableInfo WHERE name='John Smith'";
 
@@ -191,17 +209,75 @@ namespace TemperatureGraphs_MySql
                 cmd.ExecuteNonQuery();
                 this.CloseConnection();
             }
-        }        
+        }
 
-		////Select statement
-		//public List<string>[] Select()
-		//{
-		//}
+        //Select statement
+        public List<string>[] MysqlSelect()
+        {
+            string query = "SELECT * FROM tableInfo";
 
-		////Count statement
-		//public int Count()
-		//{
-		//}
+            //Create a list to store the result
+            List<string>[] list = new List<string>[3];
+            list[0] = new List<string>();
+            list[1] = new List<string>();
+            list[2] = new List<string>();
+
+            //Open connection
+            if (this.OpenConnection() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    list[0].Add(dataReader["id"] + "");
+                    list[1].Add(dataReader["name"] + "");
+                    list[2].Add(dataReader["age"] + "");
+                }
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                this.CloseConnection();
+
+                //return list to be displayed
+                return list;
+            }
+            else
+            {
+                return list;
+            }
+        }
+
+        //Count statement
+        public int MysqlCount()
+        {
+            string query = "SELECT Count(*) FROM tableInfo";
+            int Count = -1;
+
+            //Open Connection
+            if (this.OpenConnection() == true)
+            {
+                //Create Mysql Command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                //ExecuteScalar will return one value
+                Count = int.Parse(cmd.ExecuteScalar() + "");
+
+                //close Connection
+                this.CloseConnection();
+
+                return Count;
+            }
+            else
+            {
+                return Count;
+            }
+        }
 
 		////Backup
 		//public void Backup()
