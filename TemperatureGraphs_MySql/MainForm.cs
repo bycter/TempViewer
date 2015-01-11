@@ -278,15 +278,5 @@ namespace TemperatureGraphs_MySql
                 return Count;
             }
         }
-
-		////Backup
-		//public void Backup()
-		//{
-		//}
-
-		////Restore
-		//public void Restore()
-		//{
-		//}
 	}
 }
