@@ -129,6 +129,15 @@ namespace TemperatureGraphs_MySql
 			}
 		}
 
+        //Типы методов для выполнения запросов к базе Mysql:
+        //1. ExecuteNonQuery: используется для выполнения команды,
+            //которые не вернут какие-либо данные, например Insert, update or delete.
+        //2. ExecuteReader: используется для выполнения комманды,
+            //которая будет возвращать 0 или более записей, например Select.
+        //3. ExecuteScalar: используется для выполнения команды,
+            //которая будет возвращать только 1 значение, например Select Count(*).
+
+
         //Insert statement
         public void Insert()
         {
