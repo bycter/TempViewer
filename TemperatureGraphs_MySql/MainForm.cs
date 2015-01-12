@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Diagnostics;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms.DataVisualization.Charting;
 
 
 namespace TemperatureGraphs_MySql
@@ -20,6 +20,10 @@ namespace TemperatureGraphs_MySql
 		private string uid;
 		private string password;
 
+		public DateTime[] date;
+		public float[] temperature;
+		int tableCount = 0;
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -27,8 +31,9 @@ namespace TemperatureGraphs_MySql
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
+
 			string connectionString;
-			server = "192.168.3.10";
+			server = "10.8.0.10";
 			uid = "smarthouse";
 			password = "U4PD2cKIAs";
 			database = "smarthouse";
@@ -38,6 +43,7 @@ namespace TemperatureGraphs_MySql
 			connection = new MySqlConnection(connectionString);
 
 			label1.Text = "SERVER=" + server + ";" + "DATABASE=" + database + ";" + "UID=" + uid + ";" + "PASSWORD=" + "********" + ";";
+			label2.Text = "SELECT * FROM odintsova_street WHERE DATE(ow_date) = '2015-01-11';";
 		}
 
 		private void btnConnectDB_Click(object sender, EventArgs e)
@@ -58,44 +64,32 @@ namespace TemperatureGraphs_MySql
 
 		private void btnViewTable_Click(object sender, EventArgs e)
 		{
-            List<string>[] list1 = new List<string>[3];
-            list1[0] = new List<string>();
-            list1[1] = new List<string>();
-            list1[2] = new List<string>();
-            int tableCount;
 
-            //label2.Text = Convert.ToString(MysqlCount());
-            list1 = MysqlSelect();
-            tableCount = list1[0].Count;
+			if ((tableCount = MysqlCount()) == -1)
+			{
+				MessageBox.Show("MysqlCount return -1");
+			}
 
-            dataGridView1.RowCount = tableCount;
-            dataGridView1.ColumnCount = 3;
+			label2.Text = Convert.ToString("DataCount: " + tableCount);
 
-            for (int i = 0; i < tableCount; i++)
-            {
-                dataGridView1.Rows[i].Cells[0].Value = Convert.ToString(list1[0][i]);
-                dataGridView1.Rows[i].Cells[1].Value = Convert.ToString(list1[1][i]);
-                dataGridView1.Rows[i].Cells[2].Value = Convert.ToString(list1[2][i]);
-            }
+			date = new DateTime[tableCount];
+			temperature = new float[tableCount];
+
+			date = MysqlSelectDate();
+			temperature = MysqlSelectTemperature();
+
+			dataGridView1.RowCount = tableCount;
+			dataGridView1.ColumnCount = 2;
+
+			for (int i = 0; i < tableCount; i++)
+			{
+				dataGridView1.Rows[i].Cells[0].Value = Convert.ToString(date[i]);
+				dataGridView1.Rows[i].Cells[1].Value = Convert.ToString(temperature[i]);
+			}
 		}
 
-        private void btnInsert_Click(object sender, EventArgs e)
-        {
-            MysqlInsert();
-        }
-
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-            MysqlUpdate();
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            MysqlDelete();
-        }
-
-		//open connection to database
-		private bool OpenConnection()
+        //open connection to database
+		public bool OpenConnection()
 		{
 			try
 			{
@@ -133,7 +127,7 @@ namespace TemperatureGraphs_MySql
 		}
 
 		//Close connection
-		private bool CloseConnection()
+		public bool CloseConnection()
 		{
 			try
 			{
@@ -155,74 +149,14 @@ namespace TemperatureGraphs_MySql
         //3. ExecuteScalar: используется для выполнения команды,
             //которая будет возвращать только 1 значение, например Select Count(*).
 
-
-        //Insert statement
-        public void MysqlInsert()
-        {
-            string query = "INSERT INTO tableInfo (name, age) VALUES('John Smith', '33')";
-
-            //open connection
-            if (this.OpenConnection() == true)
-            {
-                //create command and assign the query and connection from the constructor
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                //Execute command
-                cmd.ExecuteNonQuery();
-
-                //close connection
-                this.CloseConnection();
-            }
-        }
-
-        //Update statement
-        public void MysqlUpdate()
-        {
-            string query = "UPDATE tableInfo SET name='Joe', age='22' WHERE name='John Smith'";
-
-            //Open connection
-            if (this.OpenConnection() == true)
-            {
-                //create mysql command
-                MySqlCommand cmd = new MySqlCommand();
-                //Assign the query using CommandText
-                cmd.CommandText = query;
-                //Assign the connection using Connection
-                cmd.Connection = connection;
-
-                //Execute query
-                cmd.ExecuteNonQuery();
-
-                //close connection
-                this.CloseConnection();
-            }
-        }
-
-        //Delete statement
-        public void MysqlDelete()
-        {
-            string query = "DELETE FROM tableInfo WHERE name='John Smith'";
-
-            if (this.OpenConnection() == true)
-            {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.ExecuteNonQuery();
-                this.CloseConnection();
-            }
-        }
-
         //Select statement
-        public List<string>[] MysqlSelect()
+        public DateTime[] MysqlSelectDate()
         {
-            string query = "SELECT * FROM tableInfo";
+			string query = "SELECT * FROM odintsova_street WHERE DATE(ow_date) = '2015-01-11';";
 
-            //Create a list to store the result
-            List<string>[] list = new List<string>[3];
-            list[0] = new List<string>();
-            list[1] = new List<string>();
-            list[2] = new List<string>();
+			DateTime[] date = new DateTime[MysqlCount()];
 
-            //Open connection
+			//Open connection
             if (this.OpenConnection() == true)
             {
                 //Create Command
@@ -230,13 +164,11 @@ namespace TemperatureGraphs_MySql
                 //Create a data reader and Execute the command
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
-                //Read the data and store them in the list
-                while (dataReader.Read())
-                {
-                    list[0].Add(dataReader["id"] + "");
-                    list[1].Add(dataReader["name"] + "");
-                    list[2].Add(dataReader["age"] + "");
-                }
+				//Read the data and store them in the list
+				for (int i = 0; dataReader.Read(); i++)
+				{
+					date[i] = Convert.ToDateTime(dataReader["ow_date"]);
+				}
 
                 //close Data Reader
                 dataReader.Close();
@@ -245,18 +177,53 @@ namespace TemperatureGraphs_MySql
                 this.CloseConnection();
 
                 //return list to be displayed
-                return list;
+				return date;
             }
             else
             {
-                return list;
+				return date;
+            }
+        }
+
+		public float[] MysqlSelectTemperature()
+        {
+			string query = "SELECT * FROM odintsova_street WHERE DATE(ow_date) = '2015-01-11';";
+
+			float[] temperature = new float[MysqlCount()];
+
+			//Open connection
+            if (this.OpenConnection() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+				//Read the data and store them in the list
+				for (int i = 0; dataReader.Read(); i++)
+				{
+					temperature[i] = Convert.ToSingle(dataReader["ow_val"]);
+				}
+
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                this.CloseConnection();
+
+                //return list to be displayed
+				return temperature;
+            }
+            else
+            {
+				return temperature;
             }
         }
 
         //Count statement
         public int MysqlCount()
         {
-            string query = "SELECT Count(*) FROM tableInfo";
+			string query = "SELECT Count(*) FROM odintsova_street WHERE DATE(ow_date) = '2015-01-11';";
             int Count = -1;
 
             //Open Connection
