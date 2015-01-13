@@ -22,7 +22,7 @@ namespace TemperatureGraphs_MySql
 
 		public DateTime[] date;
 		public float[] temperature;
-		int tableCount = 0;
+		//int tableCount = 0;
 
 		public MainForm()
 		{
@@ -64,6 +64,7 @@ namespace TemperatureGraphs_MySql
 
 		private void btnViewTable_Click(object sender, EventArgs e)
 		{
+			int tableCount = 0;
 
 			if ((tableCount = MysqlCount()) == -1)
 			{
@@ -72,11 +73,10 @@ namespace TemperatureGraphs_MySql
 
 			label2.Text = Convert.ToString("DataCount: " + tableCount);
 
-			date = new DateTime[tableCount];
-			temperature = new float[tableCount];
+			date = new DateTime[tableCount + 1];
+			temperature = new float[tableCount + 1];
 
-			date = MysqlSelectDate();
-			temperature = MysqlSelectTemperature();
+			MysqlSelect(tableCount, date, temperature);
 
 			dataGridView1.RowCount = tableCount;
 			dataGridView1.ColumnCount = 2;
@@ -219,6 +219,42 @@ namespace TemperatureGraphs_MySql
 				return temperature;
             }
         }
+
+		public bool MysqlSelect(int count, DateTime[] date, float[] temperature)
+		{
+			string query = "SELECT * FROM odintsova_street WHERE DATE(ow_date) = '2015-01-11';";
+			bool state = true;
+
+			//Open connection
+			if (this.OpenConnection() == true)
+			{
+				//Create Command
+				MySqlCommand cmd = new MySqlCommand(query, connection);
+				//Create a data reader and Execute the command
+				MySqlDataReader dataReader = cmd.ExecuteReader();
+
+				//Read the data and store them in the list
+				for (int i = 0; dataReader.Read(); i++)
+				{
+					date[i] = Convert.ToDateTime(dataReader["ow_date"]);
+					temperature[i] = Convert.ToSingle(dataReader["ow_val"]);
+				}
+
+				//close Data Reader
+				dataReader.Close();
+
+				//close Connection
+				this.CloseConnection();
+
+				//return list to be displayed
+				return state;
+			}
+			else
+			{
+				state = false;
+				return state;
+			}
+		}
 
         //Count statement
         public int MysqlCount()
