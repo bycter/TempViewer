@@ -21,6 +21,7 @@ namespace TemperatureGraphs_MySql
 		private string password;
 
 		public DateTime[] date;
+		public string[] dateString;
 		public float[] temperature;
 		//int tableCount = 0;
 
@@ -42,7 +43,7 @@ namespace TemperatureGraphs_MySql
 		/// <summary>
 		/// Шаг графика
 		/// </summary>
-		private double Step = 1;
+		private double Step, Offset;
 
 		Chart chart;
 
@@ -52,6 +53,8 @@ namespace TemperatureGraphs_MySql
 
 			txbTableTarget.Text = "odintsova_street";
 			txbDateTarget.Text = "2015-01-19";
+			txbStep.Text = "30";
+			txbOffset.Text = "0";
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -67,8 +70,8 @@ namespace TemperatureGraphs_MySql
 			// connectionString = "SERVER=10.8.0.10;DATABASE=smarthouse;UID=smarthouse;PASSWORD=U4PD2cKIAs";
 			connection = new MySqlConnection(connectionString);
 
-			label1.Text = "SERVER=" + server + ";" + "DATABASE=" + database + ";" + "UID=" + uid + ";" + "PASSWORD=" + "********" + ";";
-			label2.Text = "SELECT * FROM odintsova_street WHERE DATE(ow_date) = '2015-01-11';";
+			//label1.Text = "SERVER=" + server + ";" + "DATABASE=" + database + ";" + "UID=" + uid + ";" + "PASSWORD=" + "********" + ";";
+			//label2.Text = "SELECT * FROM odintsova_street WHERE DATE(ow_date) = '2015-01-11';";
 		}
 
 		private void btnConnectDB_Click(object sender, EventArgs e)
@@ -94,6 +97,9 @@ namespace TemperatureGraphs_MySql
 			dateTarget = txbDateTarget.Text;
 			tableTarget = txbTableTarget.Text;
 
+			Step = Convert.ToDouble(txbStep.Text);
+			Offset = Convert.ToDouble(txbOffset.Text);
+
 			if (dateTarget == "" || tableTarget == "")
 			{
 				MessageBox.Show("Проверьте название таблицы или дату");
@@ -114,15 +120,28 @@ namespace TemperatureGraphs_MySql
 			date = new DateTime[tableCount];
 			temperature = new float[tableCount];
 
-			MysqlSelect(tableCount, date, temperature);
+			if (temperature[0] == 0)
+			{
+				MysqlSelect(tableCount, date, temperature);
+				label1.Text = "temp is 0";
+			}
 
+			ConvertDateToHourMinute();
+			double[] test = new double[tableCount];
+			for (int i = 0; i < test.Length; i++)
+			{
+				test[i] = i;
+			}
+
+			label1.Text = dateString[0];
 			// Создаём элемент управления
 			CreateChart();
 
-			label2.Text = date[100].Hour.ToString() + ":" + date[100].Minute.ToString();
+			//label1.Text = dateString[100];
+			//label2.Text = date[100].Hour.ToString() + ":" + date[100].Minute.ToString();
 
 			//// Добавляем вычисленные значения в графики
-			chart.Series[0].Points.DataBindXY(date, temperature);
+			chart.Series[0].Points.DataBindXY(test, temperature);
 			//chart.Series[1].Points.DataBindXY(x, y2);
 		}
 
@@ -187,8 +206,8 @@ namespace TemperatureGraphs_MySql
 		//3. ExecuteScalar: используется для выполнения команды,
 			//которая будет возвращать только 1 значение, например Select Count(*).
 
-		//Select statement
 
+		//Select statement
 		public void MysqlSelect(int count, DateTime[] date, float[] temperature)
 		{
 			// return: 0 - OK; 1 - dateTarget or tableTarget is NULL; 2 - connection NOT open
@@ -251,49 +270,16 @@ namespace TemperatureGraphs_MySql
 		}
 	}
 
-		public double MaxMinValueY(int MinMax)
-		{
-			string MinMaxString = "MIN";
-			double returnValue;
-
-			if (MinMax == 1)
-			{
-				MinMaxString = "MAX";
-			}
-
-			string query = "SELECT " + MinMaxString + "(ow_val) FROM " + tableTarget + " WHERE DATE(ow_date) = '" + dateTarget + "';";
-
-			label2.Text = query;
-			//Open Connection
-			if (this.OpenConnection() == true)
-			{
-				//Create Mysql Command
-				MySqlCommand cmd = new MySqlCommand(query, connection);
-
-				//ExecuteScalar will return one value
-				returnValue = double.Parse(cmd.ExecuteScalar() + "");
-
-				//close Connection
-				this.CloseConnection();
-
-				if (MinMax == 1)
-				{
-					return returnValue + 10;
-				}
-				else
-				{
-					return returnValue - 10;
-				}
-			}
-			else
-			{
-				return -300;
-			}
-		}
 
 		private void CreateChart()
 		{
 			// Создаём новый элемент управления Chart
+			if (chart != null)
+			{
+				chart.Dispose();
+				label2.Text = "chart is not null";
+			}
+
 			chart = new Chart();
 			// Помещаем его на форму
 			chart.Parent = this;
@@ -306,13 +292,18 @@ namespace TemperatureGraphs_MySql
 			// Даём ей имя (чтобы потом добавлять графики)
 			area.Name = "myGraph";
 			// Задаём левую и правую границы оси X
-			//area.AxisX.Minimum = XMin;
+			//area.AxisX.Minimum = 0;
 			//area.AxisX.Maximum = XMax;
 			//area.AxisY.Minimum = YMin;
 			//area.AxisY.Maximum = YMax;
 
 			// Определяем шаг сетки
 			area.AxisX.MajorGrid.Interval = Step;
+			area.AxisX.MajorTickMark.Interval = Step;
+			//area.AxisX.Interval = Step;
+			area.AxisX.IsStartedFromZero = true;
+			area.AxisX.IntervalOffset = Offset;
+			label2.Text = Convert.ToString(area.AxisX.MajorGrid.IntervalType);
 			// Добавляем область в диаграмму
 			chart.ChartAreas.Add(area);
 
@@ -321,21 +312,14 @@ namespace TemperatureGraphs_MySql
 			// Ссылаемся на область для построения графика
 			series1.ChartArea = "myGraph";
 			// Задаём тип графика - сплайны
+			//series1.ChartType = SeriesChartType.Bubble;
 			series1.ChartType = SeriesChartType.Spline;
 			// Указываем ширину линии графика
 			series1.BorderWidth = 3;
 			// Название графика для отображения в легенде
-			series1.LegendText = "sin(x)";
+			series1.LegendText = "street";
 			// Добавляем в список графиков диаграммы
 			chart.Series.Add(series1);
-			// Аналогичные действия для второго графика
-			Series series2 = new Series();
-			series2.ChartArea = "myGraph";
-			series2.ChartType = SeriesChartType.Spline;
-			series2.BorderWidth = 3;
-			series2.LegendText = "cos(x)";
-			chart.Series.Add(series2);
-
 
 			//// Создаём легенду, которая будет показывать названия
 			//Legend legend = new Legend();
@@ -344,9 +328,24 @@ namespace TemperatureGraphs_MySql
 
 		private void ConvertDateToHourMinute()
 		{
+			dateString = new string[date.Count()];
+			string hour, minute;
+			int k = 0;
 			foreach (DateTime i in date)
 			{
+				hour = i.Hour.ToString();
+				minute = i.Minute.ToString();
 
+				if (i.Hour < 10)
+				{
+					hour = "0" + hour;
+				}
+				if (i.Minute < 10)
+				{
+					minute = "0" + minute;
+				}
+				dateString[k] = hour + ":" + minute;
+				k++;
 			}
 		}
 	}

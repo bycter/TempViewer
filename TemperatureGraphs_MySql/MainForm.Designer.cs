@@ -35,6 +35,10 @@
 			this.txbDateTarget = new System.Windows.Forms.TextBox();
 			this.lbTableTarget = new System.Windows.Forms.Label();
 			this.lbDateTarget = new System.Windows.Forms.Label();
+			this.txbStep = new System.Windows.Forms.TextBox();
+			this.lbStep = new System.Windows.Forms.Label();
+			this.lbOffset = new System.Windows.Forms.Label();
+			this.txbOffset = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// btViewTable
@@ -101,11 +105,51 @@
 			this.lbDateTarget.TabIndex = 8;
 			this.lbDateTarget.Text = "Date";
 			// 
+			// txbStep
+			// 
+			this.txbStep.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.txbStep.Location = new System.Drawing.Point(328, 376);
+			this.txbStep.Name = "txbStep";
+			this.txbStep.Size = new System.Drawing.Size(66, 22);
+			this.txbStep.TabIndex = 9;
+			// 
+			// lbStep
+			// 
+			this.lbStep.AutoSize = true;
+			this.lbStep.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.lbStep.Location = new System.Drawing.Point(325, 357);
+			this.lbStep.Name = "lbStep";
+			this.lbStep.Size = new System.Drawing.Size(36, 16);
+			this.lbStep.TabIndex = 10;
+			this.lbStep.Text = "Step";
+			// 
+			// lbOffset
+			// 
+			this.lbOffset.AutoSize = true;
+			this.lbOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.lbOffset.Location = new System.Drawing.Point(397, 357);
+			this.lbOffset.Name = "lbOffset";
+			this.lbOffset.Size = new System.Drawing.Size(42, 16);
+			this.lbOffset.TabIndex = 12;
+			this.lbOffset.Text = "Offset";
+			// 
+			// txbOffset
+			// 
+			this.txbOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.txbOffset.Location = new System.Drawing.Point(400, 376);
+			this.txbOffset.Name = "txbOffset";
+			this.txbOffset.Size = new System.Drawing.Size(66, 22);
+			this.txbOffset.TabIndex = 11;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(687, 417);
+			this.Controls.Add(this.lbOffset);
+			this.Controls.Add(this.txbOffset);
+			this.Controls.Add(this.lbStep);
+			this.Controls.Add(this.txbStep);
 			this.Controls.Add(this.lbDateTarget);
 			this.Controls.Add(this.lbTableTarget);
 			this.Controls.Add(this.txbDateTarget);
@@ -130,6 +174,10 @@
 		private System.Windows.Forms.TextBox txbDateTarget;
 		private System.Windows.Forms.Label lbTableTarget;
 		private System.Windows.Forms.Label lbDateTarget;
+		private System.Windows.Forms.TextBox txbStep;
+		private System.Windows.Forms.Label lbStep;
+		private System.Windows.Forms.Label lbOffset;
+		private System.Windows.Forms.TextBox txbOffset;
 	}
 }
 
