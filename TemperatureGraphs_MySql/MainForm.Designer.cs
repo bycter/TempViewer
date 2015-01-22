@@ -28,38 +28,29 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.btConnectDB = new System.Windows.Forms.Button();
 			this.btViewTable = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			this.txbTableTarget = new System.Windows.Forms.TextBox();
+			this.txbDateTarget = new System.Windows.Forms.TextBox();
+			this.lbTableTarget = new System.Windows.Forms.Label();
+			this.lbDateTarget = new System.Windows.Forms.Label();
 			this.SuspendLayout();
-			// 
-			// btConnectDB
-			// 
-			this.btConnectDB.Location = new System.Drawing.Point(12, 293);
-			this.btConnectDB.Name = "btConnectDB";
-			this.btConnectDB.Size = new System.Drawing.Size(113, 36);
-			this.btConnectDB.TabIndex = 0;
-			this.btConnectDB.Text = "Подключение к БД";
-			this.btConnectDB.UseVisualStyleBackColor = true;
-			this.btConnectDB.Click += new System.EventHandler(this.btnConnectDB_Click);
 			// 
 			// btViewTable
 			// 
-			this.btViewTable.Location = new System.Drawing.Point(364, 293);
+			this.btViewTable.Location = new System.Drawing.Point(541, 369);
 			this.btViewTable.Name = "btViewTable";
 			this.btViewTable.Size = new System.Drawing.Size(134, 36);
 			this.btViewTable.TabIndex = 1;
-			this.btViewTable.Text = "Отобразить таблицу";
+			this.btViewTable.Text = "Отобразить график";
 			this.btViewTable.UseVisualStyleBackColor = true;
 			this.btViewTable.Click += new System.EventHandler(this.btnViewTable_Click);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 256);
+			this.label1.Location = new System.Drawing.Point(12, 9);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(10, 13);
 			this.label1.TabIndex = 3;
@@ -68,34 +59,63 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 277);
+			this.label2.Location = new System.Drawing.Point(12, 22);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(10, 13);
 			this.label2.TabIndex = 4;
 			this.label2.Text = ".";
 			// 
-			// dataGridView1
+			// txbTableTarget
 			// 
-			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView1.Location = new System.Drawing.Point(12, 12);
-			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.Size = new System.Drawing.Size(486, 241);
-			this.dataGridView1.TabIndex = 6;
+			this.txbTableTarget.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.txbTableTarget.Location = new System.Drawing.Point(12, 376);
+			this.txbTableTarget.Name = "txbTableTarget";
+			this.txbTableTarget.Size = new System.Drawing.Size(119, 22);
+			this.txbTableTarget.TabIndex = 5;
+			// 
+			// txbDateTarget
+			// 
+			this.txbDateTarget.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.txbDateTarget.Location = new System.Drawing.Point(178, 376);
+			this.txbDateTarget.Name = "txbDateTarget";
+			this.txbDateTarget.Size = new System.Drawing.Size(119, 22);
+			this.txbDateTarget.TabIndex = 6;
+			// 
+			// lbTableTarget
+			// 
+			this.lbTableTarget.AutoSize = true;
+			this.lbTableTarget.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.lbTableTarget.Location = new System.Drawing.Point(12, 357);
+			this.lbTableTarget.Name = "lbTableTarget";
+			this.lbTableTarget.Size = new System.Drawing.Size(44, 16);
+			this.lbTableTarget.TabIndex = 7;
+			this.lbTableTarget.Text = "Table";
+			// 
+			// lbDateTarget
+			// 
+			this.lbDateTarget.AutoSize = true;
+			this.lbDateTarget.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.lbDateTarget.Location = new System.Drawing.Point(175, 357);
+			this.lbDateTarget.Name = "lbDateTarget";
+			this.lbDateTarget.Size = new System.Drawing.Size(37, 16);
+			this.lbDateTarget.TabIndex = 8;
+			this.lbDateTarget.Text = "Date";
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(510, 341);
-			this.Controls.Add(this.dataGridView1);
+			this.ClientSize = new System.Drawing.Size(687, 417);
+			this.Controls.Add(this.lbDateTarget);
+			this.Controls.Add(this.lbTableTarget);
+			this.Controls.Add(this.txbDateTarget);
+			this.Controls.Add(this.txbTableTarget);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btViewTable);
-			this.Controls.Add(this.btConnectDB);
 			this.Name = "MainForm";
 			this.Text = "График температуры";
 			this.Load += new System.EventHandler(this.MainForm_Load);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -103,11 +123,13 @@
 
 		#endregion
 
-		private System.Windows.Forms.Button btConnectDB;
 		private System.Windows.Forms.Button btViewTable;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.DataGridView dataGridView1;
+		private System.Windows.Forms.TextBox txbTableTarget;
+		private System.Windows.Forms.TextBox txbDateTarget;
+		private System.Windows.Forms.Label lbTableTarget;
+		private System.Windows.Forms.Label lbDateTarget;
 	}
 }
 
