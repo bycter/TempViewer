@@ -39,6 +39,7 @@
 			this.lbStep = new System.Windows.Forms.Label();
 			this.lbOffset = new System.Windows.Forms.Label();
 			this.txbOffset = new System.Windows.Forms.TextBox();
+			this.btConnProperties = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// btViewTable
@@ -141,11 +142,22 @@
 			this.txbOffset.Size = new System.Drawing.Size(66, 22);
 			this.txbOffset.TabIndex = 11;
 			// 
+			// btConnProperties
+			// 
+			this.btConnProperties.Location = new System.Drawing.Point(541, 322);
+			this.btConnProperties.Name = "btConnProperties";
+			this.btConnProperties.Size = new System.Drawing.Size(134, 41);
+			this.btConnProperties.TabIndex = 13;
+			this.btConnProperties.Text = "Настройки подключения";
+			this.btConnProperties.UseVisualStyleBackColor = true;
+			this.btConnProperties.Click += new System.EventHandler(this.btConnProperties_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(687, 417);
+			this.Controls.Add(this.btConnProperties);
 			this.Controls.Add(this.lbOffset);
 			this.Controls.Add(this.txbOffset);
 			this.Controls.Add(this.lbStep);
@@ -178,6 +190,7 @@
 		private System.Windows.Forms.Label lbStep;
 		private System.Windows.Forms.Label lbOffset;
 		private System.Windows.Forms.TextBox txbOffset;
+		private System.Windows.Forms.Button btConnProperties;
 	}
 }
 

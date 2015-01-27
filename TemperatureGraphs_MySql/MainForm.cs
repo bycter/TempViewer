@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms.DataVisualization.Charting;
+//using System.r
 
 
 namespace TemperatureGraphs_MySql
@@ -15,7 +16,9 @@ namespace TemperatureGraphs_MySql
 	public partial class MainForm : Form
 	{
 		private MySqlConnection connection;
-		private string server;
+		
+		
+		public string server;
 		private string database;
 		private string uid;
 		private string password;
@@ -93,6 +96,7 @@ namespace TemperatureGraphs_MySql
 		private void btnViewTable_Click(object sender, EventArgs e)
 		{
 			int tableCount = 0;
+            Random rand = new Random();
 
 			dateTarget = txbDateTarget.Text;
 			tableTarget = txbTableTarget.Text;
@@ -105,11 +109,11 @@ namespace TemperatureGraphs_MySql
 				MessageBox.Show("Проверьте название таблицы или дату");
 			}
 
-			if ((tableCount = MysqlCount()) == -1)
-			{
-				MessageBox.Show("MysqlCount return -1");
-			}
-
+            //if ((tableCount = MysqlCount()) == -1)
+            //{
+            //    MessageBox.Show("MysqlCount return -1");
+            //}
+            tableCount = 240;
 			//YMax = MaxMinValueY(1);
 			//YMin = MaxMinValueY(0);
 			if (YMax == -300 || YMin == -300)
@@ -122,18 +126,23 @@ namespace TemperatureGraphs_MySql
 
 			if (temperature[0] == 0)
 			{
-				MysqlSelect(tableCount, date, temperature);
+				//MysqlSelect(tableCount, date, temperature);
 				label1.Text = "temp is 0";
 			}
 
-			ConvertDateToHourMinute();
+			//ConvertDateToHourMinute();
 			double[] test = new double[tableCount];
 			for (int i = 0; i < test.Length; i++)
 			{
 				test[i] = i;
 			}
 
-			label1.Text = dateString[0];
+            for (int i = 0; i < temperature.Length; i++)
+            {
+                temperature[i] = rand.Next(-10, 30);
+            }
+
+			//label1.Text = dateString[0];
 			// Создаём элемент управления
 			CreateChart();
 
@@ -347,6 +356,13 @@ namespace TemperatureGraphs_MySql
 				dateString[k] = hour + ":" + minute;
 				k++;
 			}
+		}
+
+		private void btConnProperties_Click(object sender, EventArgs e)
+		{
+			ConnectionProperties connProp = new ConnectionProperties();
+			connProp.ShowDialog();
+            connProp
 		}
 	}
 }
