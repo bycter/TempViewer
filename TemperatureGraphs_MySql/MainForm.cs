@@ -11,12 +11,13 @@ using System.Windows.Forms.DataVisualization.Charting;
 //using System.r
 
 
-namespace TemperatureGraphs_MySql
+namespace TempViewer
 {
 	public partial class MainForm : Form
 	{
 		private MySqlConnection connection;
-		
+
+		public string pathToConf = "d:\\connection.txt";
 		
 		public string server;
 		private string database;
@@ -63,6 +64,7 @@ namespace TemperatureGraphs_MySql
 		private void MainForm_Load(object sender, EventArgs e)
 		{
 
+			
 			string connectionString;
 			server = "10.8.0.10";
 			uid = "smarthouse";
@@ -85,11 +87,11 @@ namespace TemperatureGraphs_MySql
 			}
 			if (!CloseConnection())
 			{
-				label2.Text = "Connection NOT close.";
+				//label2.Text = "Connection NOT close.";
 			}
 			else
 			{
-				label2.Text = "Connection close.";
+				//label2.Text = "Connection close.";
 			}
 		}
 
@@ -109,10 +111,10 @@ namespace TemperatureGraphs_MySql
 				MessageBox.Show("Проверьте название таблицы или дату");
 			}
 
-            //if ((tableCount = MysqlCount()) == -1)
-            //{
-            //    MessageBox.Show("MysqlCount return -1");
-            //}
+			if ((tableCount = MysqlCount()) == -1)
+			{
+				MessageBox.Show("MysqlCount return -1");
+			}
             tableCount = 240;
 			//YMax = MaxMinValueY(1);
 			//YMin = MaxMinValueY(0);
@@ -126,21 +128,21 @@ namespace TemperatureGraphs_MySql
 
 			if (temperature[0] == 0)
 			{
-				//MysqlSelect(tableCount, date, temperature);
-				label1.Text = "temp is 0";
+				MysqlSelect(tableCount, date, temperature);
+				//label1.Text = "temp is 0";
 			}
 
-			//ConvertDateToHourMinute();
+			ConvertDateToHourMinute();
 			double[] test = new double[tableCount];
 			for (int i = 0; i < test.Length; i++)
 			{
 				test[i] = i;
 			}
 
-            for (int i = 0; i < temperature.Length; i++)
-            {
-                temperature[i] = rand.Next(-10, 30);
-            }
+			//for (int i = 0; i < temperature.Length; i++)
+			//{
+			//    temperature[i] = rand.Next(-10, 30);
+			//}
 
 			//label1.Text = dateString[0];
 			// Создаём элемент управления
@@ -286,7 +288,7 @@ namespace TemperatureGraphs_MySql
 			if (chart != null)
 			{
 				chart.Dispose();
-				label2.Text = "chart is not null";
+				//label2.Text = "chart is not null";
 			}
 
 			chart = new Chart();
@@ -312,7 +314,7 @@ namespace TemperatureGraphs_MySql
 			//area.AxisX.Interval = Step;
 			area.AxisX.IsStartedFromZero = true;
 			area.AxisX.IntervalOffset = Offset;
-			label2.Text = Convert.ToString(area.AxisX.MajorGrid.IntervalType);
+			//label2.Text = Convert.ToString(area.AxisX.MajorGrid.IntervalType);
 			// Добавляем область в диаграмму
 			chart.ChartAreas.Add(area);
 
@@ -360,9 +362,33 @@ namespace TemperatureGraphs_MySql
 
 		private void btConnProperties_Click(object sender, EventArgs e)
 		{
-			ConnectionProperties connProp = new ConnectionProperties();
+			ConnectionProperties connProp = new ConnectionProperties(server);
 			connProp.ShowDialog();
-            connProp
+            
+		}
+
+		private void btnExit_Click(object sender, EventArgs e)
+		{
+			this.Close();
+		}
+
+		private void выходToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.Close();
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			var MBox = MessageBox.Show("Вы действительно хотите выйти из программы?",
+				"Выход из программы", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			if (MBox == DialogResult.No) e.Cancel = true;
+			if (MBox == DialogResult.Yes) return;
+		}
+
+		private void настройкиПодключенияToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ConnectionProperties connProperties = new ConnectionProperties(pathToConf);
+			connProperties.Show();
 		}
 	}
 }

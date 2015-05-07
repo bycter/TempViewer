@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 
-namespace TemperatureGraphs_MySql
+namespace TempViewer
 {
 	static class Program
 	{

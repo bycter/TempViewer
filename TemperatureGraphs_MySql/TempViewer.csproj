@@ -8,7 +8,7 @@
     <ProjectGuid>{9E34060E-2375-4B33-861A-C846E0FACDEC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TemperatureGraphs_MySql</RootNamespace>
+    <RootNamespace>TempViewer</RootNamespace>
     <AssemblyName>TemperatureGraphs_MySql</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -56,6 +56,8 @@
     <Compile Include="ConnectionProperties.Designer.cs">
       <DependentUpon>ConnectionProperties.cs</DependentUpon>
     </Compile>
+    <Compile Include="util\MySQLConnection.cs" />
+    <Compile Include="DataBase.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +66,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="util\ReadConfFileCreator.cs" />
+    <Compile Include="util\MySQLMethods.cs" />
+    <Compile Include="util\ConfigFile.cs" />
     <EmbeddedResource Include="ConnectionProperties.resx">
       <DependentUpon>ConnectionProperties.cs</DependentUpon>
     </EmbeddedResource>
@@ -78,6 +83,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -88,6 +94,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="logic\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
