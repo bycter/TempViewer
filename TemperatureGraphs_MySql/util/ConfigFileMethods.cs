@@ -7,18 +7,16 @@ using System.Windows.Forms;
 
 namespace TempViewer.util
 {
-	class ConfigFile
+	class ConfigFileMethods
 	{
 		private static string pathToConf;
+        StreamReader stRead = null;
 
-		public StreamReader openStreamReader (String pathToFile)
+		public StreamReader openStreamReader ()
 		{
-			pathToConf = pathToFile;
-			StreamReader stRead = null;
-
 			try
 			{
-				stRead = new StreamReader(pathToConf);
+				this.stRead = new StreamReader(this.getPathToConf());
 			}
 			catch (Exception ex)
 			{
@@ -28,16 +26,11 @@ namespace TempViewer.util
 			return stRead;
 		}
 
-		public void closeStreamReader (StreamReader stRead)
+		public void closeStreamReader ()
 		{
-			stRead.Dispose();
+			this.stRead.Dispose();
 		}
-
-		//public String getNewLine(StreamReader streamReader)
-		//{	
-		//    return streamReader.ReadLine();			
-		//}
-
+        
         public String[] getArrayStrings()
         {
             string[] lines = File.ReadAllLines(this.getPathToConf());

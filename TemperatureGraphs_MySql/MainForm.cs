@@ -19,11 +19,6 @@ namespace TempViewer
 
 		public string pathToConf = "d:\\connection.txt";
 		
-		public string server;
-		private string database;
-		private string uid;
-		private string password;
-
 		public DateTime[] date;
 		public string[] dateString;
 		public float[] temperature;
@@ -63,15 +58,7 @@ namespace TempViewer
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-
-			
-			string connectionString;
-			server = "10.8.0.10";
-			uid = "smarthouse";
-			password = "U4PD2cKIAs";
-			database = "smarthouse";
-
-			connectionString = "SERVER=" + server + ";" + "DATABASE=" + database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+            connectionString = "SERVER=" + server + ";" + "DATABASE=" + database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
 			// connectionString = "SERVER=10.8.0.10;DATABASE=smarthouse;UID=smarthouse;PASSWORD=U4PD2cKIAs";
 			connection = new MySqlConnection(connectionString);
 

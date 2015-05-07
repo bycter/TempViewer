@@ -16,7 +16,7 @@ namespace TempViewer
 	{
 		private string pathToConf = null;
         private TextBox[] textBoxs = new TextBox[4];
-        ConfigFile configFile = ReadConfFileCreator.getReadConfFile();
+        ConfigFileMethods configFile = ReadConfFileCreator.getReadConfFile();
 		
         //public ConnectionProperties()
         //{

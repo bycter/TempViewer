@@ -11,9 +11,9 @@ namespace TempViewer.util
 		{
 		}
 
-		public static ConfigFile getReadConfFile()
+		public static ConfigFileMethods getReadConfFile()
 		{
-			return new ConfigFile();
+			return new ConfigFileMethods();
 		}
 	}
 }

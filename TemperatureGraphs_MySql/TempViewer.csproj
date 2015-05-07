@@ -56,6 +56,7 @@
     <Compile Include="ConnectionProperties.Designer.cs">
       <DependentUpon>ConnectionProperties.cs</DependentUpon>
     </Compile>
+    <Compile Include="util\Convert.cs" />
     <Compile Include="util\MySQLConnection.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="MainForm.cs">
@@ -68,7 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util\ReadConfFileCreator.cs" />
     <Compile Include="util\MySQLMethods.cs" />
-    <Compile Include="util\ConfigFile.cs" />
+    <Compile Include="util\ConfigFileMethods.cs" />
     <EmbeddedResource Include="ConnectionProperties.resx">
       <DependentUpon>ConnectionProperties.cs</DependentUpon>
     </EmbeddedResource>
