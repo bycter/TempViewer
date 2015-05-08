@@ -14,9 +14,18 @@ namespace TempViewer
 {
 	public partial class ConnectionProperties : Form
 	{
-		private string pathToConf = null;
+		private static string pathToConf;
+
+        public ConnectionProperties(string pathToConfigFile)
+        {
+            InitializeComponent();
+            pathToConf = pathToConfigFile;
+
+        }
+
         private TextBox[] textBoxs = new TextBox[4];
-        ConfigFileMethods configFile = ReadConfFileCreator.getReadConfFile();
+        ConfigFileMethods configFile = ConfigFileMethodsCreator.getConfigFileMethods(pathToConf);
+        
 		
         //public ConnectionProperties()
         //{
@@ -24,12 +33,7 @@ namespace TempViewer
 			
         //}
 		
-		public ConnectionProperties(string pathToConfigFile)
-		{
-			InitializeComponent();
-			this.pathToConf = pathToConfigFile;
-
-		}
+		
 
 		private void ConnectionProperties_Load(object sender, EventArgs e)
 		{

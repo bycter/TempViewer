@@ -43,10 +43,13 @@
 			this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.настройкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.настройкиПодключенияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.справкаToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.настройкиПодключенияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.lbLog1 = new System.Windows.Forms.Label();
+			this.btConn = new System.Windows.Forms.Button();
+			this.lbLog2 = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -187,6 +190,13 @@
 			this.настройкаToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
 			this.настройкаToolStripMenuItem.Text = "Настройка";
 			// 
+			// настройкиПодключенияToolStripMenuItem
+			// 
+			this.настройкиПодключенияToolStripMenuItem.Name = "настройкиПодключенияToolStripMenuItem";
+			this.настройкиПодключенияToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+			this.настройкиПодключенияToolStripMenuItem.Text = "Настройки подключения";
+			this.настройкиПодключенияToolStripMenuItem.Click += new System.EventHandler(this.настройкиПодключенияToolStripMenuItem_Click);
+			// 
 			// справкаToolStripMenuItem
 			// 
 			this.справкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -208,18 +218,42 @@
 			this.справкаToolStripMenuItem1.Size = new System.Drawing.Size(149, 22);
 			this.справкаToolStripMenuItem1.Text = "Справка";
 			// 
-			// настройкиПодключенияToolStripMenuItem
+			// lbLog1
 			// 
-			this.настройкиПодключенияToolStripMenuItem.Name = "настройкиПодключенияToolStripMenuItem";
-			this.настройкиПодключенияToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
-			this.настройкиПодключенияToolStripMenuItem.Text = "Настройки подключения";
-			this.настройкиПодключенияToolStripMenuItem.Click += new System.EventHandler(this.настройкиПодключенияToolStripMenuItem_Click);
+			this.lbLog1.AutoSize = true;
+			this.lbLog1.Location = new System.Drawing.Point(12, 38);
+			this.lbLog1.Name = "lbLog1";
+			this.lbLog1.Size = new System.Drawing.Size(39, 13);
+			this.lbLog1.TabIndex = 16;
+			this.lbLog1.Text = "lbLog1";
+			// 
+			// btConn
+			// 
+			this.btConn.Location = new System.Drawing.Point(15, 106);
+			this.btConn.Name = "btConn";
+			this.btConn.Size = new System.Drawing.Size(75, 23);
+			this.btConn.TabIndex = 17;
+			this.btConn.Text = "conn";
+			this.btConn.UseVisualStyleBackColor = true;
+			this.btConn.Click += new System.EventHandler(this.btConn_Click);
+			// 
+			// lbLog2
+			// 
+			this.lbLog2.AutoSize = true;
+			this.lbLog2.Location = new System.Drawing.Point(12, 67);
+			this.lbLog2.Name = "lbLog2";
+			this.lbLog2.Size = new System.Drawing.Size(39, 13);
+			this.lbLog2.TabIndex = 18;
+			this.lbLog2.Text = "lbLog2";
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(687, 417);
+			this.Controls.Add(this.lbLog2);
+			this.Controls.Add(this.btConn);
+			this.Controls.Add(this.lbLog1);
 			this.Controls.Add(this.btnExit);
 			this.Controls.Add(this.btConnProperties);
 			this.Controls.Add(this.lbOffset);
@@ -265,6 +299,9 @@
 		private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem настройкиПодключенияToolStripMenuItem;
+        private System.Windows.Forms.Label lbLog1;
+        private System.Windows.Forms.Button btConn;
+		private System.Windows.Forms.Label lbLog2;
 	}
 }
 

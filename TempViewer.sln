@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempViewer", "TemperatureGraphs_MySql\TempViewer.csproj", "{9E34060E-2375-4B33-861A-C846E0FACDEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempViewer", "TempViewer\TempViewer.csproj", "{9E34060E-2375-4B33-861A-C846E0FACDEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,9 +10,9 @@ namespace TempViewer.util
 	class ConfigFileMethods
 	{
 		private static string pathToConf;
-        StreamReader stRead = null;
 
-		public StreamReader openStreamReader ()
+        StreamReader stRead = null;
+        public StreamReader openStreamReader ()
 		{
 			try
 			{
@@ -37,6 +37,11 @@ namespace TempViewer.util
             return lines;
         }
 
+        public int getArrayStringsLength()
+        {
+            int lines = File.ReadAllLines(this.getPathToConf()).Length;
+            return lines;
+        }
         public void writeToConfigFile(String[] data)
         {
             File.WriteAllLines(pathToConf, data);

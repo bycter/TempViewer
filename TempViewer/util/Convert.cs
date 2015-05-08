@@ -8,7 +8,7 @@ namespace TempViewer.util
     public class Convert
     {
         
-        public String[] ConvertDateToHour(DateTime[] date)
+        public String[] convertDateToHour(DateTime[] date)
         {            
             string hour;
             int k = 0;
@@ -28,7 +28,7 @@ namespace TempViewer.util
             return hourArray;
         }
 
-        private String[] ConvertDateToMinute(DateTime[] date)
+        private String[] convertDateToMinute(DateTime[] date)
         {
             string minute;
             int k = 0;
