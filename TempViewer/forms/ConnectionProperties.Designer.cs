@@ -37,6 +37,7 @@
             this.txbPassword = new System.Windows.Forms.TextBox();
             this.txbDatabase = new System.Windows.Forms.TextBox();
             this.btWriteToConf = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbAdress
@@ -114,19 +115,30 @@
             // 
             // btWriteToConf
             // 
-            this.btWriteToConf.Location = new System.Drawing.Point(107, 153);
+            this.btWriteToConf.Location = new System.Drawing.Point(12, 163);
             this.btWriteToConf.Name = "btWriteToConf";
             this.btWriteToConf.Size = new System.Drawing.Size(87, 23);
             this.btWriteToConf.TabIndex = 8;
-            this.btWriteToConf.Text = "Save to conf";
+            this.btWriteToConf.Text = "OK";
             this.btWriteToConf.UseVisualStyleBackColor = true;
             this.btWriteToConf.Click += new System.EventHandler(this.btWriteToConf_Click);
+            // 
+            // btCancel
+            // 
+            this.btCancel.Location = new System.Drawing.Point(120, 163);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(87, 23);
+            this.btCancel.TabIndex = 9;
+            this.btCancel.Text = "Cancel";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
             // 
             // ConnectionProperties
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(219, 198);
+            this.Controls.Add(this.btCancel);
             this.Controls.Add(this.btWriteToConf);
             this.Controls.Add(this.txbDatabase);
             this.Controls.Add(this.txbPassword);
@@ -155,5 +167,6 @@
 		private System.Windows.Forms.TextBox txbPassword;
 		private System.Windows.Forms.TextBox txbDatabase;
         private System.Windows.Forms.Button btWriteToConf;
+        private System.Windows.Forms.Button btCancel;
 	}
 }

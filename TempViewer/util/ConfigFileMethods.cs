@@ -5,46 +5,64 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
+
 namespace TempViewer.util
 {
 	class ConfigFileMethods
 	{
-		private static string pathToConf;
+		private string pathToConf;
 
-        StreamReader stRead = null;
-        public StreamReader openStreamReader ()
-		{
-			try
-			{
-				this.stRead = new StreamReader(this.getPathToConf());
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message);
-			}
+        private int linesLength;
+        private string[] lines = null;
+        //StreamReader stRead = null;
+        public bool isExist()
+        {
+            if (File.Exists(pathToConf))
+            {                
+                return true;
+            }
 
-			return stRead;
-		}
+            Messages.errorMessage("Config file does not exist.", "ConfigFileMethods.isExist");
+            return false;
+        }
 
-		public void closeStreamReader ()
-		{
-			this.stRead.Dispose();
-		}
-        
         public String[] getArrayStrings()
         {
-            string[] lines = File.ReadAllLines(this.getPathToConf());
+            if (pathToConf != null && isExist())
+            {
+                try
+                {
+                    lines = File.ReadAllLines(this.getPathToConf());
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             return lines;
         }
 
         public int getArrayStringsLength()
         {
-            int lines = File.ReadAllLines(this.getPathToConf()).Length;
-            return lines;
+            if (getArrayStrings() == null)
+            {
+                return 0;
+            }
+            return getArrayStrings().Length;
         }
         public void writeToConfigFile(String[] data)
         {
-            File.WriteAllLines(pathToConf, data);
+            if (pathToConf != null && isExist())
+            {
+                try
+                {
+                    File.WriteAllLines(pathToConf, data);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 		
 		public string getPathToConf()
@@ -56,5 +74,24 @@ namespace TempViewer.util
 		{
 			pathToConf = pathToFile;
 		}
+
+        //public StreamReader openStreamReader()
+        //{
+        //    try
+        //    {
+        //        this.stRead = new StreamReader(this.getPathToConf());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+
+        //    return stRead;
+        //}
+
+        //public void closeStreamReader()
+        //{
+        //    this.stRead.Dispose();
+        //}
 	}
 }

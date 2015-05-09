@@ -10,31 +10,29 @@ using System.IO;
 using TempViewer.util;
 using TempViewer;
 
+
 namespace TempViewer
 {
 	public partial class ConnectionProperties : Form
 	{
-		private static string pathToConf;
+		//private static string pathToConf;
+        private ConfigFileMethods cfm;
 
         public ConnectionProperties(string pathToConfigFile)
         {
             InitializeComponent();
-            pathToConf = pathToConfigFile;
 
+            cfm = ConfigFileMethodsCreator.getConfigFileMethods(pathToConfigFile);
+            if (cfm == null)
+            {
+                Messages.errorMessage("Объект класса ConfigFileMethods не создан", "ConnectionProperties.Init");
+                this.Close();
+            }
         }
 
-        private TextBox[] textBoxs = new TextBox[4];
-        ConfigFileMethods configFile = ConfigFileMethodsCreator.getConfigFileMethods(pathToConf);
         
-		
-        //public ConnectionProperties()
-        //{
-        //    InitializeComponent();
-			
-        //}
-		
-		
-
+        private TextBox[] textBoxs = new TextBox[4];
+        
 		private void ConnectionProperties_Load(object sender, EventArgs e)
 		{
             textBoxs[0] = txbAddress;
@@ -46,29 +44,45 @@ namespace TempViewer
 		}
 
 		public void fillingForm(TextBox[] obj)
-		{
-            if (pathToConf == null)
+		{               
+            string[] confFileLines = null;
+
+            if (cfm.isExist())
             {
-                MessageBox.Show("Не определен путь к файлу!");
-                return;
+                try
+                {
+                    confFileLines = cfm.getArrayStrings();
+                }
+                catch (Exception ex)
+                {
+                    Messages.errorMessage(ex.Message);
+                    return;
+                }
+
+                if (confFileLines == null)
+                {
+                    Messages.errorMessage("confFileLines == null", "ConnectionProperties.fillingForm");
+                    //this.Close();
+                    return;
+                }
+
+                if (confFileLines.Length == 0 || confFileLines.Length < obj.Length)
+                {
+                    Messages.errorMessage("Файл пустой либо указаны не все параметры", "ConnectionProperties.fillingForm");
+                    //this.Close();
+                    return;
+                }
+
+                int k = 0;
+                foreach (TextBox i in obj)
+                {
+                    i.Text = confFileLines[k];
+                    k++;
+                }
             }
-
-            
-            configFile.setPathToConf(pathToConf);
-
-            string[] confFile = configFile.getArrayStrings();
-
-            if (confFile.Length != obj.Length)
+            else
             {
-                MessageBox.Show("Количество строк в файле не равно количеству текстбоксов!");
-                return;
-            }
-
-            int k = 0;
-            foreach (TextBox i in obj)
-            {
-                i.Text = confFile[k];
-                k++;
+                Messages.errorMessage("fillingForm: cfm.isExist() = false");
             }
         }
         private void btWriteToConf_Click(object sender, EventArgs e)
@@ -77,10 +91,30 @@ namespace TempViewer
             int k = 0;
             foreach (TextBox i in textBoxs)
             {
+                if (i.Text == "")
+                {
+                    Messages.stopMessage("Одно или несколько полей не заполнены!");
+                    return;
+                }
+
                 data[k] = i.Text;
                 k++;
             }
-            configFile.writeToConfigFile(data);
+            try
+            {
+                cfm.writeToConfigFile(data);
+            }
+            catch (Exception ex)
+            {
+                Messages.errorMessage(ex.Message);
+                return;
+            }
+            this.Close();
+        }
+
+        private void btCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }       
 	}
 }

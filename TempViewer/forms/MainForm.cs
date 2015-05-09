@@ -16,6 +16,7 @@ namespace TempViewer
 	public partial class MainForm : Form
 	{
 		public string configMySQLConn = "d:\\connection.conf";
+        //public string configMySQLConn = "z:\\temper\\connection.conf";
         public string configChart = "d:\\chart.conf";
 
         
@@ -182,8 +183,6 @@ namespace TempViewer
 
 		private void btConnProperties_Click(object sender, EventArgs e)
 		{
-			
-            
 		}
 
 		private void btnExit_Click(object sender, EventArgs e)
@@ -207,23 +206,43 @@ namespace TempViewer
 		private void настройкиПодключенияToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			connProperties = new ConnectionProperties(configMySQLConn);
-			connProperties.Show();
+			connProperties.ShowDialog();
         }
 
         private void btConn_Click(object sender, EventArgs e)
         {
-			mysqlMethods = MySQLMethodsCreator.getMySQLMethods(configMySQLConn);
+            mysqlMethods = MySQLMethodsCreator.getMySQLMethods(configMySQLConn);
 
-			if (mysqlMethods.OpenConnection())
-			{
-				lbLog1.Text = "Conn Open OK";
-			}
+            if (mysqlMethods.OpenConnection())
+            {
+                lbLog1.Text = "Conn Open OK";
+            }
+            else
+            {
+                lbLog1.Text = "Conn Open NOT";
+            }
 
-			if (mysqlMethods.CloseConnection())
-			{
-				lbLog2.Text = "Conn Close OK";
-			}
+            if (mysqlMethods.CloseConnection())
+            {
+                lbLog2.Text = "Conn Close OK";
+            }
 
+        }
+
+        private void btTest_Click(object sender, EventArgs e)
+        {
+            ConfigFileMethods cfm = ConfigFileMethodsCreator.getConfigFileMethods(configMySQLConn);
+
+            try
+            {
+                lbTest2.Text = Convert.ToString(cfm.getArrayStringsLength());
+            }
+            catch (Exception ex)
+            {
+                Messages.errorMessage(ex.Message);
+                //return;
+            }
+            
         }
 	}
 }

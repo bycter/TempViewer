@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TempViewer.util
 {
-    public class Convert
+    public class Converters
     {
         
         public String[] convertDateToHour(DateTime[] date)

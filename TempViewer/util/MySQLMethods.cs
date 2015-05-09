@@ -16,7 +16,7 @@ namespace TempViewer.util
         {			
         }
 
-        enum enumConnString { server, login, password, database }
+        enum enumConnString { address, login, password, database }
 
         private MySqlConnection connectionDatabase;
 
@@ -24,7 +24,7 @@ namespace TempViewer.util
         private string connectionString;
 		private string selectString;
 
-        public DateTime[] date;
+        public DateTime[] dateTime;
         public string[] dateString;
         public float[] temperature;
 
@@ -32,7 +32,7 @@ namespace TempViewer.util
         {
 			if (!getConfSettingsArray())
 			{
-				MessageBox.Show("buildConnectionString(): getConfSettingsArray() завершился с ошибкой.");
+                //Messages.errorMessage("getConfSettingsArray() завершился с ошибкой.", "MySQLMethods.buildConnectionString()");
 				return false;
 			}
 
@@ -40,8 +40,12 @@ namespace TempViewer.util
 			{
 				return false;
 			}
-
-			connectionString = "SERVER=" + confSettingsArray[(int)enumConnString.server] + ";"
+            if (confSettingsArray.Length == 0 || confSettingsArray.Length < 4)
+            {
+                Messages.errorMessage("Файл пустой либо указаны не все параметры", "MySQLMethods.buildConnectionString");
+                return false;
+            }
+			connectionString = "SERVER=" + confSettingsArray[(int)enumConnString.address] + ";"
 				+ "DATABASE=" + confSettingsArray[(int)enumConnString.database] + ";"
 				+ "UID=" + confSettingsArray[(int)enumConnString.login] + ";"
 				+ "PASSWORD=" + confSettingsArray[(int)enumConnString.password] + ";";
@@ -53,7 +57,7 @@ namespace TempViewer.util
 		{
 			if (configMySQLConnection == null)
 			{
-				MessageBox.Show("MySQLMethods: Не указан путь к файлу конфигурации.");
+                Messages.errorMessage("Не указан путь к файлу конфигурации.", "MySQLMethods.getConfSettingsArray");
 				return false;
 			}
 
@@ -61,12 +65,24 @@ namespace TempViewer.util
 
 			if (cfm == null)
 			{
-				MessageBox.Show("MySQLMethods: Объект класса ConfigFileMethods не создан.");
+                Messages.errorMessage("Объект класса ConfigFileMethods не создан.", "MySQLMethods.getConfSettingsArray");
 				return false;
 			}
 
-			confSettingsArray = new string[cfm.getArrayStringsLength()];
-			confSettingsArray = cfm.getArrayStrings();
+            if (cfm.isExist())
+            {
+                try
+                {
+                    confSettingsArray = new string[cfm.getArrayStringsLength()];
+                    confSettingsArray = cfm.getArrayStrings();
+                }
+                catch (Exception ex)
+                {
+                    Messages.errorMessage(ex.Message);
+                    return false;
+                }
+                
+            }
 
 			return true;
 		}
@@ -115,7 +131,7 @@ namespace TempViewer.util
                             errorMessage += "Something wrong...";
                             break;
                     }
-                    MessageBox.Show(errorMessage);
+                    Messages.errorMessage(errorMessage, "MySQLMethods.OpenConnection");
                     return false;
                 }                
             }
@@ -130,15 +146,14 @@ namespace TempViewer.util
 				try
 				{
 					connectionDatabase.Close();
-					return true;
-				}
+			    }
 				catch (MySqlException ex)
 				{
 					MessageBox.Show(ex.Message);
 					return false;
 				}
 			}
-			return false;
+			return true;
         }
 
 
@@ -226,22 +241,13 @@ namespace TempViewer.util
         {
             configMySQLConnection = configConn;
         }
-		public string getConnectionString()
-		{
-			return this.connectionString;
-		}
 
-		public void setConnectionString(String connString)
-		{
-			this.connectionString = connString;
-		}
-
-		public string getselectString()
+		public string getSelectString()
 		{
 			return this.selectString;
 		}
 
-		public void setselectString(String selectString)
+		public void setSelectString(String selectString)
 		{
 			this.selectString = selectString;
 		}
